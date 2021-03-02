@@ -22,6 +22,7 @@ sudo rm -rf /opt/ws-keyboard
 ```
 
 ### Mentions
+<<<<<<< Updated upstream
 This was inspired by [Ralf Meermeier](https://github.com/threebrooks) Android application [UniversalController](https://github.com/threebrooks/UniversalController) and the code examples of [simple-websocket-server](https://pypi.org/project/simple-websocket-server/) Python module.
 
 ### TODO
@@ -31,3 +32,5 @@ This was inspired by [Ralf Meermeier](https://github.com/threebrooks) Android ap
 * _Add user classes with permissions for system commands_
 * _Receive push notifications which may be linked to system commands_
 * _Add mouse events_
+
+This was inspired by [Ralf Meermeier](https://github.com/threebrooks)'s Android application [UniversalController](https://github.com/threebrooks/UniversalController) and code examples from the [simple-websocket-server](https://pypi.org/project/simple-websocket-server/) Python module.
