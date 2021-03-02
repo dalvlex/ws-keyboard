@@ -23,4 +23,28 @@ systemctl daemon-reload
 echo "# Removing SSL certificate"
 rm -rf /opt/ws-keyboard/ssl/*
 
-echo "DONE: Now all remaining files should be only in /opt/ws-keyboard/."
+echo "# Checking service ports"
+if [[ `netstat -ntap |grep stunnel |grep -c :9500` -eq 1 ]]; then
+   echo "! Error: Service wsk-stunnel is still using port 9500"
+else
+   echo "Port 9500 free"
+fi
+if [[ `netstat -ntap |grep php |grep -c :9501` -eq 1 ]]; then
+   echo "! Error: Service wsk-php is still using port 9501"
+else
+   echo "Port 9501 free"
+fi
+if [[ `netstat -ntap |grep stunnel |grep -c :9502` -eq 1 ]]; then
+   echo "! Error: Service wsk-stunnel is still using port 9502"
+else
+   echo "Port 9502 free"
+fi
+if [[ `netstat -ntap |grep python3 |grep -c :9503` -eq 1 ]]; then
+   echo "! Error: Service wsk-python3 is still using port 9503"
+else
+   echo "Port 9503 free"
+fi
+
+echo "DONE:"
+echo "- If there is a port from the above still being used, you will have to manually kill the service process using that port;"
+echo "- All remaining files are in '/opt/ws-keyboard/'."

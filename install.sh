@@ -6,6 +6,32 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
+echo "##### Checking service ports availability"
+if [[ `netstat -ntap |grep -c :9500` -eq 0 ]]; then
+   echo "Port 9500 available, OK"
+else
+   echo "! Error: a process is already using port 9500"
+   exit 1
+fi
+if [[ `netstat -ntap |grep -c :9501` -eq 0 ]]; then
+   echo "Port 9501 available, OK"
+else
+   echo "! Error: a process is already using port 9501"
+   exit 1
+fi
+if [[ `netstat -ntap |grep -c :9502` -eq 0 ]]; then
+   echo "Port 9502 available, OK"
+else
+   echo "! Error: a process is already using port 9502"
+   exit 1
+fi
+if [[ `netstat -ntap |grep -c :9503` -eq 0 ]]; then
+   echo "Port 9503 available, OK"
+else
+   echo "! Error: a process is already using port 9503"
+   exit 1
+fi
+
 echo "##### Installing system dependencies"
 echo "# Updating repositories"
 apt update
@@ -133,15 +159,15 @@ if [[ `netstat -ntap |grep stunnel |grep -c :9500` -eq 1 ]]; then
 else
    echo "! Error: could not find service wsk-stunnel on port 9500"
 fi
-if [[ `netstat -ntap |grep stunnel |grep -c :9502` -eq 1 ]]; then
-   echo "- Service wsk-stunnel confirmed on port 9502"
-else
-   echo "! Error: could not find service wsk-stunnel on port 9502"
-fi
 if [[ `netstat -ntap |grep php |grep -c :9501` -eq 1 ]]; then
    echo "- Service wsk-php confirmed on port 9501"
 else
    echo "! Error: could not find service wsk-php on port 9501"
+fi
+if [[ `netstat -ntap |grep stunnel |grep -c :9502` -eq 1 ]]; then
+   echo "- Service wsk-stunnel confirmed on port 9502"
+else
+   echo "! Error: could not find service wsk-stunnel on port 9502"
 fi
 if [[ `netstat -ntap |grep python3 |grep -c :9503` -eq 1 ]]; then
    echo "- Service wsk-python3 confirmed on port 9503"
@@ -151,6 +177,7 @@ fi
 
 LOCAL_IP_ADDRESS=$(ip -4 route |grep default |head -n1 |awk -F 'src ' '{print $NF}' |awk '{print $1}')
 echo ""
-echo "DONE: If all service ports above have been confirmed, installation was successfully completed!"
-echo "* Be sure to visit both https://${LOCAL_IP_ADDRESS}:9500/ and https://${LOCAL_IP_ADDRESS}:9502/ and add exceptions for the self-signed SSL certificate in your current browser."
-echo "* WebSocket Keyboard may be accessed at https://${LOCAL_IP_ADDRESS}:9500/"
+echo "DONE:"
+echo "- If all service ports above have been confirmed, installation was successfully completed;"
+echo "- Visit both 'https://${LOCAL_IP_ADDRESS}:9500/' and 'https://${LOCAL_IP_ADDRESS}:9502/' and add browser exceptions for the self-signed SSL certificate;"
+echo "- Access 'https://${LOCAL_IP_ADDRESS}:9500/' click 'Connect' and start sending keyboard events to the linux active display."
