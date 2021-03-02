@@ -23,3 +23,11 @@ sudo rm -rf /opt/ws-keyboard
 
 ### Mentions
 This was inspired by [Ralf Meermeier](https://github.com/threebrooks) Android application [UniversalController](https://github.com/threebrooks/UniversalController) and the code examples of [simple-websocket-server](https://pypi.org/project/simple-websocket-server/) Python module.
+
+### TODO
+* Add portrait keyboard options and landscape game controller for mobile
+* Extend frontend UI and add user/password access with SQLite support
+* Create functionallity to add/remove buttons which trigger system commands
+* _Add user classes with permissions for system commands_
+* _Receive push notifications which may be linked to system commands_
+* _Add mouse events_
