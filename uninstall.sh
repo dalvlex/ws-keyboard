@@ -21,6 +21,6 @@ rm -f /etc/systemd/system/wsk-stunnel.service
 systemctl daemon-reload
 
 echo "# Removing SSL certificate"
-rm -rf /var/www/ws-keyboard/ssl/*
+rm -rf /opt/ws-keyboard/ssl/*
 
-echo "DONE: Now all remaining files should be only in /var/www/ws-keyboard/."
+echo "DONE: Now all remaining files should be only in /opt/ws-keyboard/."

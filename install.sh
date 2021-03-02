@@ -18,7 +18,7 @@ yes | pip3 install python-uinput
 
 echo "##### Install configuration files"
 echo "# Generating self-signed SSL certificate and key for Stunnel"
-openssl req -new -x509 -nodes -out /var/www/ws-keyboard/ssl/cert.pem -keyout /var/www/ws-keyboard/ssl/key.pem -days 3650 -subj "/C=RO/ST=Bucharest/L=Bucharest/O=WssKeyboard.none/CN=WssKeyboard.none"
+openssl req -new -x509 -nodes -out /opt/ws-keyboard/ssl/cert.pem -keyout /opt/ws-keyboard/ssl/key.pem -days 3650 -subj "/C=RO/ST=Bucharest/L=Bucharest/O=WssKeyboard.none/CN=WssKeyboard.none"
 
 echo "# Creating wsk-php service for client UI"
 tee /etc/systemd/system/wsk-php.service >/dev/null <<'EOF'
@@ -28,7 +28,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/php -S 127.0.0.1:9501 -t /var/www/ws-keyboard/web
+ExecStart=/usr/bin/php -S 127.0.0.1:9501 -t /opt/ws-keyboard/web
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -46,7 +46,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /var/www/ws-keyboard/local/ws-keyboard-server.py --host 127.0.0.1 --port 9503
+ExecStart=/usr/bin/python3 /opt/ws-keyboard/local/ws-keyboard-server.py --host 127.0.0.1 --port 9503
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -64,7 +64,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/stunnel /var/www/ws-keyboard/local/ws-keyboard-stunnel.conf
+ExecStart=/usr/bin/stunnel /opt/ws-keyboard/local/ws-keyboard-stunnel.conf
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -75,10 +75,10 @@ WantedBy=multi-user.target
 EOF
 
 echo "# Creating wsk-stunnel configuration file"
-tee /var/www/ws-keyboard/local/ws-keyboard-stunnel.conf >/dev/null <<'EOF'
+tee /opt/ws-keyboard/local/ws-keyboard-stunnel.conf >/dev/null <<'EOF'
 ; Certificate/key is needed in server mode and optional in client mode
-cert = /var/www/ws-keyboard/ssl/cert.pem
-key = /var/www/ws-keyboard/ssl/key.pem
+cert = /opt/ws-keyboard/ssl/cert.pem
+key = /opt/ws-keyboard/ssl/key.pem
 
 ; Protocol version (all, SSLv2, SSLv3, TLSv1)
 sslVersion = all
