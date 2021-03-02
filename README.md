@@ -6,16 +6,20 @@ This package was put together to allow me to control content on my Raspberry Pi 
 
 ### Install
 ##### ws-keyboard may only be installed in /var/www/ws-keyboard
-sudo git clone https://github.com/dalvlex/ws-keyboard /var/www/ws-keyboard  
-sudo /var/www/ws-keyboard/install.sh  
+```
+sudo git clone https://github.com/dalvlex/ws-keyboard /var/www/ws-keyboard
+sudo /var/www/ws-keyboard/install.sh
+```
 
 ### Usage
-Visit both https://<YOUR_SERVER_IP>:9500/ and https://<YOUR_SERVER_IP>:9502/ and add browser exceptions for the self-signed SSL certificate.  
-Access https://<YOUR_SERVER_IP>:9500/, Connect and start sending keyboard events to the linux active console.
+Visit both `https://<YOUR_SERVER_IP>:9500/` and `https://<YOUR_SERVER_IP>:9502/` and add browser exceptions for the self-signed SSL certificate.  
+Access `https://<YOUR_SERVER_IP>:9500/`, click 'Connect' and start sending keyboard events to the linux active console.
 
 ### Uninstall
-sudo /var/www/ws-keyboard/uninstall.sh  
-sudo rm -rf /var/www/ws-keyboard  
+```
+sudo /var/www/ws-keyboard/uninstall.sh
+sudo rm -rf /var/www/ws-keyboard
+```
 
 ### Mentions
 This was inspired by [Ralf Meermeier](https://github.com/threebrooks) Android application [UniversalController](https://github.com/threebrooks/UniversalController) and the code examples of [simple-websocket-server](https://pypi.org/project/simple-websocket-server/) Python module.
