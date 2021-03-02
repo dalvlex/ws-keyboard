@@ -12,7 +12,8 @@ sudo /bin/bash /opt/ws-keyboard/install.sh
 _ws-keyboard may only be installed in `/opt/ws-keyboard`_
 
 ### Usage
-Visit both `https://<YOUR_SERVER_IP>:9500/` add browser exceptions for the self-signed SSL certificate, click 'Connect' and start sending keyboard events to the linux active display.
+Visit both `https://<YOUR_SERVER_IP>:9500/` and `https://<YOUR_SERVER_IP>:9502/` and add browser exceptions for the self-signed SSL certificate.  
+Access `https://<YOUR_SERVER_IP>:9500/` click 'Connect' and start sending keyboard events to the linux active display.  
 
 ### Uninstall
 ```
