@@ -5,10 +5,9 @@ WebSocket Keyboard is a client-server tool for sending keyboard events from a HT
 This package was put together to allow me to control content on my Raspberry Pi 4 display from my Android mobile phone without using a physical keyboard. And for this purpose it works without any issue on 'Raspbian GNU/Linux 10 (buster)' - it also works for Kodi on top of RetroPie.
 
 ### Install
-cd /var/www/  
-sudo git clone https://github.com/dalvlex/ws-keyboard  
-cd ws-keyboard/  
-sudo ./install.sh  
+##### ws-keyboard may only be installed in /var/www/ws-keyboard
+sudo git clone https://github.com/dalvlex/ws-keyboard /var/www/ws-keyboard  
+sudo /var/www/ws-keyboard/install.sh  
 
 ### Usage
 Visit both https://<YOUR_SERVER_IP>:9500/ and https://<YOUR_SERVER_IP>:9502/ and add browser exceptions for the self-signed SSL certificate.  
@@ -16,7 +15,6 @@ Access https://<YOUR_SERVER_IP>:9500/, Connect and start sending keyboard events
 
 ### Uninstall
 sudo /var/www/ws-keyboard/uninstall.sh  
-cd /var/www/  
 sudo rm -rf /var/www/ws-keyboard  
 
 ### Mentions
