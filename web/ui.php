@@ -1,3 +1,6 @@
+<?php
+$local_ip_address = trim(shell_exec("ip -4 route |grep default |awk -F'src ' '{print \$NF}' |awk '{print \$1}'"));
+?>
 <!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
@@ -45,7 +48,9 @@
       <input type="button" class="btnKey" id="btnCtrlX" name="btnCtrlX" value="Ctrl X" data-key="KEY_LEFTCTRL" data-mod="sticky" />
       <input type="button" class="btnKey" id="btnShiftX" name="btnShiftX" value="Shift X" data-key="KEY_LEFTSHIFT" data-mod="sticky" />
     </p>
-    <p><input id="wsURL" name="wsURL"></textarea></p>
+    <p>
+      <input id="wsURL" name="wsURL" value="wss://<?php echo $local_ip_address ?>:9500/"></textarea>
+    </p>
     <p>
       <input type="button" class="btnDisconnect" id="btnDisconnect" name="btnDisconnect" value="Disconnect" />
       <input type="button" class="btnConnect" id="btnConnect" name="btnConnect" value="Connect" />

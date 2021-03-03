@@ -9,6 +9,6 @@
   }
   // Serve HTML UI
   else {
-    require('ui.html');
+    require('ui.php');
   }
 

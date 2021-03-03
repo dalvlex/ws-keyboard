@@ -36,7 +36,7 @@ var kspecial = {
 function init(){
   wskForm = document.wskForm;
 
-  wskForm.wsURL.value = "wss://192.168.0.100:9502/";
+  //wskForm.wsURL.value = "wss://192.168.0.100:9502/";
   wskForm.inputText.value = "";
   wskForm.btnDisconnect.disabled = true;
   wskForm.inputText.focus();
