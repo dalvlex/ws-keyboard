@@ -43,10 +43,10 @@
     wskForm.inputText.click();
 
     // Add event listeners for wskForm elements
-    wskForm.getElementById('#btnConnect').addEventListener('click', doConnect, false);
-    wskForm.getElementById('#btnDisconnect').addEventListener('click', doDisconnect, false);
-    wskForm.getElementById('#inputText').addEventListener('keyup', sendAndClear, false);
-    wskForm.getElementById('#inputText').addEventListener('keydown', sendAndClear, false);
+    wskForm.querySelector('#btnConnect').addEventListener('click', doConnect, false);
+    wskForm.querySelector('#btnDisconnect').addEventListener('click', doDisconnect, false);
+    wskForm.querySelector('#inputText').addEventListener('keyup', sendAndClear, false);
+    wskForm.querySelector('#inputText').addEventListener('keydown', sendAndClear, false);
     [...wskForm.querySelectorAll('.btnKey')].forEach(function(item){
       item.addEventListener('click', doKey, false);
     });
@@ -127,7 +127,7 @@
   }
   </script>
   <style type="text/css">
-  [name="btnLeft"] {
+  #btnLeft {
     margin-left: 20px;
   }
   #wsURL,
