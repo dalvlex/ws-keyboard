@@ -3,7 +3,8 @@
   - All id, name, class are camelCase;
   - All elements have identical 'id' and 'name' attributes;
   - Javascript events are added with addEventListener, not as HTML element inline attribute;
-  - Javascript must be in strict mode.
+  - Javascript must be in strict mode;
+  - No jQuery or other frameworks!
 */
 "use strict"
 var websocket;
