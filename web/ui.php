@@ -1,5 +1,5 @@
 <?php
-$local_ip_address = trim(shell_exec("ip -4 route |grep default |awk -F'src ' '{print \$NF}' |awk '{print \$1}'"));
+$local_ip_address = @reset(explode(':', $_SERVER['HTTP_HOST']));
 ?>
 <!DOCTYPE html>
 <head>
