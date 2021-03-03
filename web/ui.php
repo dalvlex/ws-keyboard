@@ -49,7 +49,7 @@ $local_ip_address = @reset(explode(':', $_SERVER['HTTP_HOST']));
       <input type="button" class="btnKey" id="btnShiftX" name="btnShiftX" value="Shift X" data-key="KEY_LEFTSHIFT" data-mod="sticky" />
     </p>
     <p>
-      <input id="wsURL" name="wsURL" value="wss://<?php echo $local_ip_address ?>:9500/"></textarea>
+      <input id="wsURL" name="wsURL" value="wss://<?php echo $local_ip_address ?>:9502/"></textarea>
     </p>
     <p>
       <input type="button" class="btnDisconnect" id="btnDisconnect" name="btnDisconnect" value="Disconnect" />
