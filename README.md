@@ -1,9 +1,11 @@
 # WebSocket Keyboard
 
 ### Description
-WebSocket Keyboard is a client-server tool for sending keyboard events from a HTTPS page on your desktop/mobile to a linux server running Ubuntu 16.04 LTS or above, Raspbian Buster etc. This is pretty fast in the local network as it uses sockets for transmission.  
+WebSocket Keyboard is a client-server tool for sending keyboard events from a HTTPS page on your desktop/mobile to the active display of a linux server.  
 
-This package was put together to allow control of a Raspberry Pi 4 from my Android mobile phone without using a physical keyboard, and for this purpose it works without any issue on 'Raspbian GNU/Linux 10 (buster)'.
+This package was put together to allow control of a Raspberry Pi 4 from my Android mobile phone without using a physical keyboard.  
+There is almost no lag on the local network as it uses sockets for communication.  
+It works on Ubuntu 16.04 LTS and above, Raspbian Jessie and above.  
 
 ### Install
 ```
