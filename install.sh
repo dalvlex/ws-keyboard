@@ -143,8 +143,7 @@ else
 fi
 
 echo "# Fixing permissions"
-LOCAL_USER=$(ps au |grep ps |grep grep |awk '{print $1}')
-chown -R ${LOCAL_USER}:${LOCAL_USER} /opt/ws-keyboard
+chown -R ${SUDO_USER}:${SUDO_USER} /opt/ws-keyboard
 
 echo "##### Enabling and starting services"
 systemctl daemon-reload
