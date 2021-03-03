@@ -2,8 +2,6 @@ import sys
 import inspect
 import signal
 import time
-#import json
-#import uinput
 from evdev import UInput, ecodes as eco
 from simple_websocket_server import WebSocket, WebSocketServer
 from optparse import OptionParser
@@ -46,7 +44,6 @@ class WebKeyboard(WebSocket):
              "`": { "key": "KEY_GRAVE" },
              "~": { "key": "KEY_GRAVE", "mod": "KEY_LEFTSHIFT" },
              }
-
 
     def connected(self):
         print(self.address, "connected")
@@ -93,7 +90,6 @@ class WebKeyboard(WebSocket):
     def handle_close(self):
         print(self.address, "disconnected")
         self.ui.close()
-
 
 if __name__ == '__main__':
     parser = OptionParser(usage='usage: %prog [options]')
