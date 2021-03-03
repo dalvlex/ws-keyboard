@@ -142,6 +142,10 @@ else
    echo "evdev" >> /etc/modules
 fi
 
+echo "# Fixing permissions"
+LOCAL_USER=$(whoami)
+chown -R ${LOCAL_USER}:${LOCAL_USER} /opt/ws-keyboard
+
 echo "##### Enabling and starting services"
 systemctl daemon-reload
 systemctl enable wsk-php.service
