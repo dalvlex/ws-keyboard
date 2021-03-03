@@ -54,7 +54,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/php -S 127.0.0.1:9501 -t /opt/ws-keyboard/web
+ExecStart=/usr/bin/php -S 127.0.0.1:9501 -t /opt/ws-keyboard/web /opt/ws-keyboard/web/router.php
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -72,7 +72,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /opt/ws-keyboard/local/ws-keyboard-server.py --host 127.0.0.1 --port 9503
+ExecStart=/usr/bin/python3 /opt/ws-keyboard/local/server.py --host 127.0.0.1 --port 9503
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -90,7 +90,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/stunnel /opt/ws-keyboard/local/ws-keyboard-stunnel.conf
+ExecStart=/usr/bin/stunnel /opt/ws-keyboard/local/stunnel.conf
 StandardOutput=inherit
 StandardInput=inherit
 Restart=always
@@ -143,7 +143,7 @@ else
 fi
 
 echo "# Fixing permissions"
-LOCAL_USER=$(whoami)
+LOCAL_USER=$(ps au |grep ps |grep grep |awk '{print $1}')
 chown -R ${LOCAL_USER}:${LOCAL_USER} /opt/ws-keyboard
 
 echo "##### Enabling and starting services"
