@@ -53,7 +53,7 @@ class WebKeyboard(WebSocket):
         print(self.data)
 
         self.key = self.mod = None
-	# Set key value from valid KEY_s directly
+	    # Set key value from valid KEY_s directly
         if "KEY_" in self.data:
             try:
                 self.key = getattr(eco, self.data)
