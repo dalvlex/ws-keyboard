@@ -1,2 +1,2 @@
 <?php
-	header('Location: /ws-keyboard-ui.html', 301);
+	header('Location: /ws-keyboard-ui.html?time=' . time(), 301);

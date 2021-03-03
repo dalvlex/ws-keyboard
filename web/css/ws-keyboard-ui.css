@@ -1,0 +1,11 @@
+#btnLeft {
+  margin-left: 20px;
+}
+#wsURL,
+#inputText {
+  width: 200px;
+}
+#outputText {
+  width: 210px;
+  height: 50px;
+}
