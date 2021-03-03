@@ -5,6 +5,13 @@
   <meta name="mobile-web-app-capable" content="yes">
   <title>WebSocket Keyboard</title>
   <script language="javascript" type="text/javascript">
+  /*
+    Conventions:
+    - All id, name, class are camelCase;
+    - All elements have identical 'id' and 'name' attributes;
+    - Javascript events are added with addEventListener, not as HTML element inline attribute;
+    - Javascript must be in strict mode.
+  */
   "use strict"
   var websocket;
   var wskForm;
@@ -36,8 +43,8 @@
   function init(){
     wskForm = document.wskForm;
 
-    wskForm.wsURL.value = "wss://192.168.0.100:9502/"
-    wskForm.inputText.value = ""
+    wskForm.wsURL.value = "wss://192.168.0.100:9502/";
+    wskForm.inputText.value = "";
     wskForm.btnDisconnect.disabled = true;
     wskForm.inputText.focus();
     wskForm.inputText.click();
@@ -95,22 +102,22 @@
     wskForm.outputText.scrollTop = wskForm.outputText.scrollHeight;
   }
 
-  function sendAndClear() {
-    let kcode = event.keyCode || event.charCode;
+  function sendAndClear(evt) {
+    let kcode = evt.keyCode || evt.charCode;
 
     // send special events on keydown
     if (typeof kspecial[kcode] !== typeof undefined){
-      event.preventDefault();
-      if (event.type == "keydown") {
+      evt.preventDefault();
+      if (evt.type == "keydown") {
         doSend( kspecial[kcode] );
       }
     }
     // send keys for desktops on keydown since keyup is skipping keys
-    else if (event.key.length == 1 && event.type == "keydown") {
-      doSend( event.key );
+    else if (evt.key.length == 1 && evt.type == "keydown") {
+      doSend( evt.key );
     }
     // send keys for mobiles on keyup since keydown is not writing to the input element at the press time
-    else if (event.key.length > 1 && wskForm.inputText.value.length > 0 && event.type == "keyup"){
+    else if (evt.key.length > 1 && wskForm.inputText.value.length > 0 && evt.type == "keyup"){
       doSend( wskForm.inputText.value.slice(-1) );
     }
 
@@ -188,4 +195,3 @@
   </form>
 </body>
 </html> 
-
