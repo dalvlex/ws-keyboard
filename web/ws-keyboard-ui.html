@@ -1,190 +1,191 @@
 <!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>WebSocket Keyboard</title>
+  <script language="javascript" type="text/javascript">
+  "use strict"
+  var websocket;
+  var wskForm;
+  var kspecial = {
+                  8: "KEY_BACKSPACE",
+                  9: "KEY_TAB",
+                  13: "KEY_ENTER",
+                  27: "KEY_ESC",
+                  46: "KEY_DELETE",
+                  38: "KEY_UP",
+                  40: "KEY_DOWN",
+                  37: "KEY_LEFT",
+                  39: "KEY_RIGHT",
+                  112: "KEY_F1",
+                  113: "KEY_F2",
+                  114: "KEY_F3",
+                  115: "KEY_F4",
+                  116: "KEY_F5",
+                  117: "KEY_F6",
+                  118: "KEY_F7",
+                  119: "KEY_F8",
+                  120: "KEY_F9",
+                  121: "KEY_F10",
+                  122: "KEY_F11",
+                  123: "KEY_F12"
+                  };
 
-<meta charset="utf-8" />
-<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
-<meta name="mobile-web-app-capable" content="yes">
+  window.addEventListener("load", init, false);
+  function init(){
+    wskForm = document.wskForm;
 
-<title>WebSocket Keyboard</title>
+    wskForm.wsURL.value = "wss://192.168.0.100:9502/"
+    wskForm.inputText.value = ""
+    wskForm.btnDisconnect.disabled = true;
+    wskForm.inputText.focus();
+    wskForm.inputText.click();
 
-<script language="javascript" type="text/javascript">
-
-
-  function init()
-  {
-	document.myform.url.value = "wss://192.168.0.100:9502/"
-	document.myform.inputtext.value = ""
-	document.myform.disconnectButton.disabled = true;
+    // Add event listeners for wskForm elements
+    wskForm.getElementById('#btnConnect').addEventListener('click', doConnect, false);
+    wskForm.getElementById('#btnDisconnect').addEventListener('click', doDisconnect, false);
+    wskForm.getElementById('#inputText').addEventListener('keyup', sendAndClear, false);
+    wskForm.getElementById('#inputText').addEventListener('keydown', sendAndClear, false);
+    [...wskForm.querySelectorAll('.btnKey')].forEach(function(item){
+      item.addEventListener('click', doKey, false);
+    });
   }
 
-  function doConnect()
-  {
-    websocket = new WebSocket(document.myform.url.value);
+  function doConnect(evt){
+    websocket = new WebSocket(wskForm.wsURL.value);
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };
     websocket.onerror = function(evt) { onError(evt) };
   }
 
-  function onOpen(evt)
-  {
-    writeToScreen("connected\n");
-	document.myform.connectButton.disabled = true;
-	document.myform.disconnectButton.disabled = false;
+  function onOpen(evt){
+    writeOutput("connected\n");
+    wskForm.btnConnect.disabled = true;
+    wskForm.btnDisconnect.disabled = false;
   }
 
-  function onClose(evt)
-  {
-    writeToScreen("disconnected\n");
-	document.myform.connectButton.disabled = false;
-	document.myform.disconnectButton.disabled = true;
+  function onClose(evt){
+    writeOutput("disconnected\n");
+    wskForm.btnConnect.disabled = false;
+    wskForm.btnDisconnect.disabled = true;
   }
 
-  function onMessage(evt)
-  {
-    writeToScreen("response: " + evt.data + '\n');
+  function onMessage(evt){
+    writeOutput("response: " + evt.data + '\n');
   }
 
-  function onError(evt)
-  {
-    writeToScreen('error: ' + evt.data + '\n');
+  function onError(evt){
+    writeOutput('error: ' + evt.data + '\n');
 
-	websocket.close();
+    websocket.close();
 
-	document.myform.connectButton.disabled = false;
-	document.myform.disconnectButton.disabled = true;
-
+    wskForm.btnConnect.disabled = false;
+    wskForm.btnDisconnect.disabled = true;
   }
 
-  function doSend(message)
-  {
+  function doSend(message){
     websocket.send(message);
-    writeToScreen("sent: " + message + '\n'); 
+    writeOutput("sent: " + message + '\n'); 
   }
 
-  function writeToScreen(message)
-  {
-    document.myform.outputtext.value += message
-	document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
-
+  function writeOutput(message){
+    wskForm.outputText.value += message
+    wskForm.outputText.scrollTop = wskForm.outputText.scrollHeight;
   }
-
-  window.addEventListener("load", init, false);
-document.onreadystatechange = () => {
-  if (document.readyState === 'interactive') {
-    // document ready
-	document.myform.inputtext.focus();
-	document.myform.inputtext.click();
-  }
-};
 
   function sendAndClear() {
-let kspecial = {
-8: "KEY_BACKSPACE",
-9: "KEY_TAB",
-13: "KEY_ENTER",
-27: "KEY_ESC",
-46: "KEY_DELETE",
-38: "KEY_UP",
-40: "KEY_DOWN",
-37: "KEY_LEFT",
-39: "KEY_RIGHT",
-112: "KEY_F1",
-113: "KEY_F2",
-114: "KEY_F3",
-115: "KEY_F4",
-116: "KEY_F5",
-117: "KEY_F6",
-118: "KEY_F7",
-119: "KEY_F8",
-120: "KEY_F9",
-121: "KEY_F10",
-122: "KEY_F11",
-123: "KEY_F12"
-};
-	let kcode = event.keyCode || event.charCode;
+    let kcode = event.keyCode || event.charCode;
 
-	// send special events on keydown
-	if (typeof kspecial[kcode] !== typeof undefined){
-		event.preventDefault();
-		if (event.type == "keydown") {
-			doSend( kspecial[kcode] );
-		}
-	}
-	// send keys for desktops on keydown since keyup is skipping keys
-	else if (event.key.length == 1 && event.type == "keydown") {
-                doSend( event.key );
-	}
-	// send keys for mobiles on keyup since keydown is not writing to the input element at the press time
-	else if (event.key.length > 1 && document.myform.inputtext.value.length > 0 && event.type == "keyup"){
-		doSend( document.myform.inputtext.value.slice(-1) );
-	}
+    // send special events on keydown
+    if (typeof kspecial[kcode] !== typeof undefined){
+      event.preventDefault();
+      if (event.type == "keydown") {
+        doSend( kspecial[kcode] );
+      }
+    }
+    // send keys for desktops on keydown since keyup is skipping keys
+    else if (event.key.length == 1 && event.type == "keydown") {
+      doSend( event.key );
+    }
+    // send keys for mobiles on keyup since keydown is not writing to the input element at the press time
+    else if (event.key.length > 1 && wskForm.inputText.value.length > 0 && event.type == "keyup"){
+      doSend( wskForm.inputText.value.slice(-1) );
+    }
 
-	document.myform.inputtext.value = '';
-   }
+    wskForm.inputText.value = '';
+  }
 
-   function doKey(keyname, mod = ''){
-	doSend( keyname );
-	document.myform.inputtext.focus();
-   }
+  function doKey(evt){
+    doSend( evt.target.dataset.key );
+    wskForm.inputText.focus();
+  }
 
-   function doDisconnect() {
-		websocket.close();
-   }
-
-
-</script>
-
-<div id="output"></div>
-
-<form name="myform">
-<p>
-<textarea name="outputtext" rows="4" cols="50"></textarea>
-</p>
-<p>
-<input name="inputtext" maxlength="1" type="password" autocomplete="off" data-lpignore="true" onKeyUp="sendAndClear()" onKeyDown="sendAndClear()" placeholder="click and type here to send" />
-<input type="button" name=enterButton value="Enter" onClick="doKey('KEY_ENTER');" />
-</p>
-<p>
-<input type="button" name=tabButton value="Tab" onClick="doKey('KEY_TAB');" />
-<input type="button" name=escButton value="Esc" onClick="doKey('KEY_ESC');" />
-<input type="button" name=deleteButton value="Delete" onClick="doKey('KEY_DELETE');" />
-<input type="button" name=backspaceButton value="Backspace" onClick="doKey('KEY_BACKSPACE');" />
-<input type="button" name=leftButton value="LEFT" onClick="doKey('KEY_LEFT');" style="margin-left: 20px;" />
-<input type="button" name=upButton value="UP" onClick="doKey('KEY_UP');" />
-<input type="button" name=downButton value="DOWN" onClick="doKey('KEY_DOWN');" />
-<input type="button" name=rightButton value="RIGHT" onClick="doKey('KEY_RIGHT');" />
-</p>
-<input type="button" name=f1Button value="F1" onClick="doKey('KEY_F1');" />
-<input type="button" name=f2Button value="F2" onClick="doKey('KEY_F2');" />
-<input type="button" name=f3Button value="F3" onClick="doKey('KEY_F3');" />
-<input type="button" name=f4Button value="F4" onClick="doKey('KEY_F4');" />
-<input type="button" name=f5Button value="F5" onClick="doKey('KEY_F5');" />
-<input type="button" name=f6Button value="F6" onClick="doKey('KEY_F6');" />
-<input type="button" name=f7Button value="F7" onClick="doKey('KEY_F7');" />
-<input type="button" name=f8Button value="F8" onClick="doKey('KEY_F8');" />
-<input type="button" name=f9Button value="F9" onClick="doKey('KEY_F9');" />
-<input type="button" name=f10Button value="F10" onClick="doKey('KEY_F10');" />
-<input type="button" name=f11Button value="F11" onClick="doKey('KEY_F11');" />
-<input type="button" name=f12Button value="F12" onClick="doKey('KEY_F12');" />
-<p>
-</p>
-<input type="button" name=alt1Button value="Alt 1" onClick="doKey('KEY_LEFTALT', 'once');" />
-<input type="button" name=ctrl1Button value="Ctrl 1" onClick="doKey('KEY_LEFTCTRL', 'once');" />
-<input type="button" name=shift1Button value="Shift 1" onClick="doKey('KEY_LEFTSHIFT', 'once');" />
-<input type="button" name=altxButton value="Alt x" onClick="doKey('KEY_LEFTALT', 'sticky');" />
-<input type="button" name=ctrlxButton value="Ctrl x" onClick="doKey('KEY_LEFTCTRL', 'sticky');" />
-<input type="button" name=shiftxButton value="Shift x" onClick="doKey('KEY_LEFTSHIFT', 'sticky');" />
-<p>
-</p>
-<p>
-<input name="url" size="70"></textarea>
-</p>
-<p>
-<input type="button" name=disconnectButton value="Disconnect" onClick="doDisconnect();">
-<input type="button" name=connectButton value="Connect" onClick="doConnect();">
-</p>
-
-
-</form>
+  function doDisconnect(evt) {
+    websocket.close();
+  }
+  </script>
+  <style type="text/css">
+  [name="btnLeft"] {
+    margin-left: 20px;
+  }
+  #wsURL,
+  #inputText {
+    width: 200px;
+  }
+  #outputText {
+    width: 210px;
+    height: 50px;
+  }
+  </style>
+</head>
+<body>
+  <div id="output"></div>
+  <form name="wskForm">
+    <p><textarea id="outputText" name="outputText"></textarea></p>
+    <p>
+      <input id="inputText" name="inputText" maxlength="1" type="password" autocomplete="off" data-lpignore="true" placeholder="click and type here to send" />
+      <input type="button" class="btnKey" id="btnEnter" name="btnEnter" value="Enter" data-key="KEY_ENTER" />
+    </p>
+    <p>
+      <input type="button" class="btnKey" id="btnTab" name="btnTab" value="Tab" data-key="KEY_TAB" />
+      <input type="button" class="btnKey" id="btnEsc" name="btnEsc" value="Esc" data-key="KEY_ESC" />
+      <input type="button" class="btnKey" id="btnDelete" name="btnDelete" value="Delete" data-key="KEY_DELETE" />
+      <input type="button" class="btnKey" id="btnBackspace" name="btnBackspace" value="Backspace" data-key="KEY_BACKSPACE" />
+      <input type="button" class="btnKey" id="btnLeft" name="btnLeft" value="LEFT" data-key="KEY_LEFT" />
+      <input type="button" class="btnKey" id="btnUp" name="btnUp" value="UP" data-key="KEY_UP" />
+      <input type="button" class="btnKey" id="btnDown" name="btnDown" value="DOWN" data-key="KEY_DOWN" />
+      <input type="button" class="btnKey" id="btnRight" name="btnRight" value="RIGHT" data-key="KEY_RIGHT" />
+    </p>
+    <p>
+      <input type="button" class="btnKey" id="btnF1" name="btnF1" value="F1" data-key="KEY_F1" />
+      <input type="button" class="btnKey" id="btnF2" name="btnF2" value="F2" data-key="KEY_F2" />
+      <input type="button" class="btnKey" id="btnF3" name="btnF3" value="F3" data-key="KEY_F3" />
+      <input type="button" class="btnKey" id="btnF4" name="btnF4" value="F4" data-key="KEY_F4" />
+      <input type="button" class="btnKey" id="btnF5" name="btnF5" value="F5" data-key="KEY_F5" />
+      <input type="button" class="btnKey" id="btnF6" name="btnF6" value="F6" data-key="KEY_F6" />
+      <input type="button" class="btnKey" id="btnF7" name="btnF7" value="F7" data-key="KEY_F7" />
+      <input type="button" class="btnKey" id="btnF8" name="btnF8" value="F8" data-key="KEY_F8" />
+      <input type="button" class="btnKey" id="btnF9" name="btnF9" value="F9" data-key="KEY_F9" />
+      <input type="button" class="btnKey" id="btnF10" name="btnF10" value="F10" data-key="KEY_F10" />
+      <input type="button" class="btnKey" id="btnF11" name="btnF11" value="F11" data-key="KEY_F11" />
+      <input type="button" class="btnKey" id="btnF12" name="btnF12" value="F12" data-key="KEY_F12" />
+    </p>
+    <p>
+      <input type="button" class="btnKey" id="btnAlt1" name="btnAlt1" value="Alt 1" data-key="KEY_LEFTALT" data-mod="once" />
+      <input type="button" class="btnKey" id="btnCtrl1" name="btnCtrl1" value="Ctrl 1" data-key="KEY_LEFTCTRL" data-mod="once" />
+      <input type="button" class="btnKey" id="btnShift1" name="btnShift1" value="Shift 1" data-key="KEY_LEFTSHIFT" data-mod="once" />
+      <input type="button" class="btnKey" id="btnAltX" name="btnAltX" value="Alt X" data-key="KEY_LEFTALT" data-mod="sticky" />
+      <input type="button" class="btnKey" id="btnCtrlX" name="btnCtrlX" value="Ctrl X" data-key="KEY_LEFTCTRL" data-mod="sticky" />
+      <input type="button" class="btnKey" id="btnShiftX" name="btnShiftX" value="Shift X" data-key="KEY_LEFTSHIFT" data-mod="sticky" />
+    </p>
+    <p><input id="wsURL" name="wsURL"></textarea></p>
+    <p>
+      <input type="button" class="btnDisconnect" id="btnDisconnect" name="btnDisconnect" value="Disconnect" />
+      <input type="button" class="btnConnect" id="btnConnect" name="btnConnect" value="Connect" />
+    </p>
+  </form>
+</body>
 </html> 
 
